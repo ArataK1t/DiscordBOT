@@ -308,13 +308,13 @@ class DiscordBot(discord.Client):
                     async with session.post(url, json=payload, headers=headers, **proxy_config) as response:
                         if response.status != 200:
                             logger.error(f"Ошибка OpenAI API: {response.status}, {await response.text()}")
-                            return "Ошибка при обращении к OpenAI."
+                            return None
 
                         response_json = await response.json()
                         return response_json['choices'][0]['message']['content']
             except Exception as e:
                 logger.error(f"Ошибка при обращении к OpenAI API: {e}")
-                return "Ошибка при обращении к OpenAI."
+                return None
         else:
             # Локальный режим
             inputs = tokenizer(prompt, return_tensors="pt").to("cpu")
@@ -446,7 +446,7 @@ class DiscordBot(discord.Client):
             return clean_response
         except Exception:
             logger.exception("Ошибка при генерации ответа:")
-            return "Произошла ошибка."
+            return None
 
     def update_dialog_context(self, guild_id, channel_id, user_id, user_message, bot_response):
         context_key = (guild_id, channel_id, user_id)
