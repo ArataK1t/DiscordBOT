@@ -387,6 +387,8 @@ class DiscordBot(discord.Client):
         unwanted_patterns = [
             r"</?think>",
             r"</?silence>",
+            r"\s*Got it!?\s*",
+            r"\s*Gotcha!?\s*",
         ]
         for pattern in unwanted_patterns:
             text = re.sub(pattern, "", text, flags=re.IGNORECASE)
